@@ -38,12 +38,21 @@ function Login() {
             }),
         }
         await fetch("http://localhost:8080/login?email="+email+"&password="+password, options)
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    setResponseMessage("Invalid Login/Password")
+                    return null;
+                }
+            })
             .then(data => {
-                console.log(data)
-                sessionStorage.setItem("member_id", data.id);
-                sessionStorage.setItem("member_name", data.name);
-                nav('/feed')
+                if (data) {
+                    console.log(data)
+                    sessionStorage.setItem("member_id", data.id);
+                    sessionStorage.setItem("member_name", data.name);
+                    nav('/feed')
+                }
             });
     }
 

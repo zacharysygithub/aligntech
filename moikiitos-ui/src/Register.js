@@ -59,17 +59,26 @@ function Register() {
             body: JSON.stringify(body)
         }
         await fetch("http://localhost:8080/register", options)
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    setResponseMessage("Email already exists");
+                    return null;
+                }
+            })
             .then(data => {
-                console.log(data)
-                setName("");
-                setEmail("");
-                setPassword("");
-                setConfirm("");
-                setResponseMessage("Member Successfully Registered")
-                sessionStorage.setItem("member_id", data.id);
-                sessionStorage.setItem("member_name", data.name);
-                nav("/feed");
+                if (data) {
+                    console.log(data)
+                    setName("");
+                    setEmail("");
+                    setPassword("");
+                    setConfirm("");
+                    setResponseMessage("Member Successfully Registered")
+                    sessionStorage.setItem("member_id", data.id);
+                    sessionStorage.setItem("member_name", data.name);
+                    nav("/feed");
+                }
             });
     }
 

@@ -30,10 +30,14 @@ function Feed() {
     }, []);
 
     useEffect(() => {
-        if (id) {
-            refreshFeed();
-            refreshSubs();
-        }
+        const interval = setInterval(() => {
+            if (id) {
+                refreshFeed();
+                refreshSubs();
+            }
+        }, 2000);
+        return () => clearInterval(interval);
+
     }, [id])
 
     useEffect(() => {
